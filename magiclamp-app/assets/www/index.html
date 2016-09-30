@@ -1,0 +1,731 @@
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+
+		<script type="text/javascript">
+		function textAreaAdjust(o) {
+			o.style.height = "1px";
+			o.style.height = (1 + o.scrollHeight)+"px";
+		}
+
+		//var _v = "" + 102;
+		//alert(_v);
+		/*
+		$.ajax({
+			type: 'PUT',
+			url: 'https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/controls/speed',
+			dataType: "json",
+			contentType: "application/json",
+			data: _v,
+			success: function(data) {
+				alert('Load was performed.');
+			},
+			statusCode: {
+					0: function() {
+						alert( "not allowed" );
+					}
+				},
+				error:function (xhr, ajaxOptions, thrownError){
+					alert(xhr.status);
+					alert(thrownError);
+				}
+		});*/  // funktioniert !!!
+		
+		
+		
+		/*
+		$.ajax({
+		type: "POST",
+		url: "https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info",
+		data: { name: "test"}
+
+		});*/
+
+
+		function httpGet(theUrl)
+		{
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+			xmlHttp.send( null );
+			return xmlHttp.responseText;
+		}
+
+		//alert(httpGet("https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info"));
+		//alert(httpGet("https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/"));
+
+		var main_url = "https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/";
+
+
+		function get(url){
+		//var url = "https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/";
+
+			$.ajax({
+				method: "GET",
+				dataType: "json",
+				async: false,
+
+				headers:{
+					"Access-Control-Allow-Origin": "*",
+					'Content-Type':'application/json',
+					'Access-Control-Allow-Methods' : 'DELETE, HEAD, GET, OPTIONS, POST, PUT',
+					'Access-Control-Allow-Headers': 'Content-Type, Content-Range, Content-Disposition, Content-Description',
+					'Access-Control-Max-Age': '1728000',
+					'name-api-key':'ewf45r4435trge',
+					'Content-Type':'application/x-www-form-urlencoded'
+				},
+				url: url,
+				success: function(result){
+					alert(result[1]);
+					return result;
+				},
+				statusCode: {
+					404: function() {
+						//alert( "page not found" );
+						//return null;
+					}
+				},
+				error:function (xhr, ajaxOptions, thrownError){
+					//alert(xhr.status);
+					//alert(thrownError);
+					//return null;
+				}
+			});
+
+
+		//return null;
+		}
+
+		/*var invocation = new XMLHttpRequest();
+
+		function callOtherDomain(){
+		if(invocation) {
+		invocation.open('GET', url, true);
+		invocation.withCredentials = true;
+		invocation.onreadystatechange = function(){
+		alert(invocation.responseText);
+		};
+		invocation.send();
+		}
+		}*/
+
+		/*
+		$.ajax({
+		type: "GET",
+		contentType: "text/plain",
+		url: "http://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info?",
+		dataType: "json",
+		function(data, status){
+		alert("Data: " + data + "\nStatus: " + status);
+		}
+		});*/
+
+		/*
+		$.post("http://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info",
+		{
+		name: "regenbogen",
+		},
+		function(data, status){
+		alert("Data: " + data + "\nStatus: " + status);
+		});
+		*/
+		//document.domain = 'yourdomain.com';
+
+		function set_url(){
+			//return;
+			if ((localStorage.getItem("url") == "")||(localStorage.getItem("url") == null)){
+				localStorage.setItem("url",main_url);
+			}else{
+				main_url = localStorage.getItem("url");
+			}
+			document.getElementById("url").value = main_url;
+		}
+		
+		function create_main_screen(){		
+			set_url();
+			
+			var html_text = "";
+			var description;
+			var info_url;
+			var icon_url;
+			
+			$.ajax({
+				method: "GET",
+				cache: false,
+				dataType: "json",
+				async: false,
+
+				url: main_url,
+				success: function(result){
+					//alert(result[1].links[0].rel);
+
+					for (var i = 0; i < result.length; i++){
+
+						for (var x = 00; x < result[i].links.length; x++){
+							//continue;
+							if (result[i].links[x].rel == "info"){
+								info_url = result[i].links[x].href;
+							}
+							if (result[i].links[x].rel == "icon"){
+								icon_url = result[i].links[x].href;
+							}
+						}
+						//alert(info_url.split("hppt://").join("https://") + "\n" + main_url + result[i].name + "/info");
+
+						$.ajax({
+							method: "GET",
+							cache: false,
+							dataType: "json",
+							async: false,
+							url: main_url + result[i].name + "/info",
+							//url: info_url,
+							success: function(res){
+								//	alert(res.controls);
+								description = res.name;  // if (this.src==' + "'" + "../play.png" + "'" + '){this.src=' + "'" + "../pause.png'}else{this.src='../play.png'" + '
+								//html_text = html_text + '<div style="position: relative; background:#000; border-radius:8px" onclick="return;' + "var div = this; function func(e){var btn_play = div.getElementsByClassName('play')[0].getBoundingClientRect();var btn_edit = div.getElementsByClassName('edit')[0].getBoundingClientRect();if ((e.clientX >= btn_play.left) && (e.clientX <= btn_play.right)){if ((e.clientY >= btn_play.top) && (e.clientY <= btn_play.bottom)){play_effect('" + result[i] + "');}}if ((e.clientX >= btn_edit.left) && (e.clientX <= btn_edit.right)){if ((e.clientY >= btn_edit.top) && (e.clientY <= btn_edit.bottom)){edit_effect('" + result[i] + "');}}}func(event);" + '"><img src="../chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)"><div style="position: absolute; right: 0; bottom: 0; color: white; margin-right:9vw; margin-bottom: 5vw; z-index:98"><img onclick="alert(23243);" class="play" src="../Play.png" style="width:8vw;height:8vw"><div style="width:10vw; height:0px; display: inline-block"></div><img class="edit" src="../edit.png" style="width:8vw;height:8vw"></div><div style="position: absolute; left: 0; width: 100%; height:100%; bottom: 0; color: white"><div style="height:0.5em;width:0"></div><label style=" font-size:10vw; margin:0.4em; font-family:sans-serif; font-weight:550">' + result[i] + '</label><div style="width:0; height:0.25em"></div><label style=" font-size:5vw; margin:0.8em; font-family:sans-serif;">' + description + '</label></div></div><div style="height:0.5em;width:0"></div>';
+								
+								var w = window.innerWidth;
+								var p = w / 100;
+								
+								
+								//html_text = html_text + '<div style="position: relative; background:#000; border-radius:8px" ><img src="../chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)"><div style="position: absolute; right: 0; bottom: 0; color: white; margin-right:9vw; margin-bottom: 5vw; z-index:98"><label id="label_' + i + '" style="display:none">false</label><img id="img_' + i + '" onclick="play_effect(' + "'" + result[i].name + "'," + i + ');" src="../play.png" style="width:8vw;height:8vw"><div style="width:10vw; height:0px; display: inline-block"></div><img onclick="edit_effect(' + "'" + result[i].name + "'," + JSON.stringify(res.controls).split('"').join("'") + ');" src="../edit.png" style="width:8vw;height:8vw"></div><div style="position: absolute; left: 0; width: 100%; height:100%; bottom: 0; color: white"><div style="height:0.5em;width:0"></div><label style=" font-size:10vw; margin:0.4em; font-family:sans-serif; font-weight:550">' + result[i].name + '</label><div style="width:0; height:0.25em"></div><label style=" font-size:5vw; margin:0.8em; font-family:sans-serif;">' + description + '</label></div></div><div style="height:0.5em;width:0"></div>';
+								html_text = html_text + '<div style="position: relative; background:#000; border-radius:8px" ><img src="../chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)"><div style="position: absolute; right: 0; bottom: 0; color: white; margin-right:' + (9 * p) + 'px; margin-bottom: ' + (5 * p) + 'px; z-index:98"><label id="label_' + i + '" style="display:none">false</label><img id="img_' + i + '" onclick="play_effect(' + "'" + result[i].name + "'," + i + ');" src="../play.png" style="width:' + (8 * p) + 'px;height:' + (8 * p) + 'px"><div style="width:' + (10 * p) + 'px; height:0px; display: inline-block"></div><img onclick="edit_effect(' + "'" + result[i].name + "'," + JSON.stringify(res.controls).split('"').join("'") + ');" src="../edit.png" style="width:' + (8 * p) + 'px;height:' + (8 * p) + 'px"></div><div style="position: absolute; left: 0; width: 100%; height:100%; bottom: 0; color: white"><div style="height:0.5em;width:0"></div><label style=" font-size:' + (10 * p) + 'px; margin:0.4em; font-family:sans-serif; font-weight:550">' + result[i].name + '</label><div style="width:0; height:0.25em"></div><label style=" font-size:' + (5 * p) + 'px; margin:0.8em; font-family:sans-serif;">' + description + '</label></div></div><div style="height:0.5em;width:0"></div>';
+								
+							}
+						});
+
+					}
+					html_text = "<div style='height:2.8em;width:10px'></div>" + html_text;
+					document.getElementById("main_content").innerHTML = html_text;
+				}
+			});
+
+		}
+
+		function play_effect(name,i){
+			if (document.getElementById("label_" + i).innerHTML == "true"){
+				alert("stop: " + name);
+				document.getElementById("label_" + i).innerHTML = false;
+				document.getElementById("img_" + i).src = "../play.png";
+			}else{
+				alert("play: " + name);
+				document.getElementById("label_" + i).innerHTML = true;
+				document.getElementById("img_" + i).src = "../pause.png";
+			}
+
+		}
+
+		function put(value,_url){
+			//document.write(_url);
+			//alert(value);
+			//return;
+			var _value = "" + value;
+			$.ajax({
+				type: 'PUT',
+				url: _url,
+				dataType: "json",
+				contentType: "application/json",
+				data: _value,
+				success: function(data) {
+					//alert('Load was performed.');
+				},
+				statusCode: {
+						0: function() {
+							//alert( "not allowed" );
+						}
+					},
+					error:function (xhr, ajaxOptions, thrownError){
+						//alert(xhr.status);
+						//alert(thrownError);
+					}
+			});
+		}
+		
+		function edit_effect(name,controls){
+			
+			document.getElementById("screen_edit").style.display = "";
+			document.getElementById("screen_main").style.display = "none";
+
+			var content = '<table border="0" style="width:100%;">';
+
+			for (var i = 0; i < controls.length; i++){
+				content = content + '<tr><td style="white-space:nowrap; color:#941323; font-size:4vw">' + controls[i].name + '</td><td style="visibility:hidden; font-size:4vw">_._</td><td style="width:100%">';
+				
+				var link = main_url + name + "/controls/" + controls[i].name;
+				var value;
+				
+				$.ajax({
+					method: "GET",
+					cache: false,
+					dataType: "json",
+					async: false,
+					url: link,
+					
+					success: function(res){
+						value = res;
+					}
+				});
+				
+				switch (controls[i].type){
+					case "number":
+						content = content + '<input onchange="put(this.value,' + "'" + link + "'" + ');" type="range" style="width:100%" value="' + value + '" min="' + controls[i].minValue + '" max="' + controls[i].maxValue + '">';
+						break;
+					case "choice":
+						content = content + '<div class="dropdown"><div class="dropbtn" onclick="myFunction()"><label class="drop_label" id="control_' + i + '" >' + value + '</label><img class="drop_img" src="../arrow_down.png" style="height:0.5em; margin-top:0.25em; margin-right:0.5em " align="right"></div><hr style="margin:0"><div id="myDropdown" class="dropdown-content">';
+
+						for (var y = 0; y < controls[i].values.length; y++){
+							content = content + '<a onclick="select(' + "'" + controls[i].values[y] + "'," + y + "," + i + ',' + "'" + link + "'" + ')">' + controls[i].values[y] + '</a>';
+						}
+
+						content = content + '</div></div>';
+						break;
+				}
+				content = content + '</td></tr>';
+				
+				if (i < (controls.length - 1)){
+					content = content + '<tr><td colspan="3" style="height:2em"></td></tr>';
+				}
+			}
+			
+			content = content + "</table>";
+			
+			document.getElementById("options_content").innerHTML = content;
+			document.getElementById("edit_name").innerHTML = name;
+		}
+
+		function select(item, index, i, link){
+			document.getElementById("control_" + i).innerHTML = item;
+			document.getElementById("myDropdown").classList.toggle("show");
+			
+			$.ajax({
+				type: 'PUT',
+				url: link,
+				dataType: "json",
+				contentType: "application/json",
+				data: item,
+				success: function(data) {
+					//alert('Load was performed.');
+				},
+				statusCode: {
+						0: function() {
+							//alert( "not allowed" );
+						}
+					},
+					error:function (xhr, ajaxOptions, thrownError){
+						//alert(xhr.status);
+						//alert(thrownError);
+					}
+			});
+		}
+		
+		function back(){
+			document.getElementById("screen_edit").style.display = "none";
+			document.getElementById("screen_main").style.display = "";
+		}
+
+		function toggle_bar(show){
+			if (show){
+				$("#main_settings").slideDown();
+				document.getElementById("toggle").onclick = function (){ toggle_bar(false) };
+				document.getElementById("toggle").src = "../arrow_up.png";
+			}else{
+				$("#main_settings").slideUp();
+				document.getElementById("toggle").onclick = function (){ toggle_bar(true) };
+				document.getElementById("toggle").src = "../arrow_down.png";
+			}
+		}
+		
+		function myFunction() {
+			document.getElementById("myDropdown").classList.toggle("show");
+		}
+
+		// Close the dropdown if the user clicks outside of it
+		window.onclick = function(event) {
+			//if (!event.target.matches('.dropbtn')) {
+			var name = event.target.className;
+			
+			if (name == "dropbtn") {
+				return;
+			}
+			if (name == "drop_label") {
+				return;
+			}
+			if (name == "drop_img") {
+				return;
+			}
+			
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+		
+		function save(){
+			main_url = document.getElementById("url").value;
+			localStorage.setItem("url",main_url);
+		}
+		
+		function discard(){
+			document.getElementById("url").value = main_url;
+		}
+		</script>
+
+
+
+		<style type="text/css">
+		/*	input[type=range]{
+		-webkit-appearance: none;
+		}
+
+		input[type=range]::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 2px;
+		background: #a8a8a8;
+		border: none;
+		border-radius: 3px;
+		}
+
+		input[type=range]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		border: 1px solid #aaa;
+		height: 2em;
+		width: 2em;
+		border-radius: 50%;
+		background: #fff;
+		margin-top: -0.8em;
+		}
+
+		input[type=range]:focus {
+		outline: none;
+		}
+
+		input[type=range]:focus::-webkit-slider-runnable-track {
+		background: #a8a8a8;
+		}*/
+
+
+
+
+
+		input[type=range] {
+		-webkit-appearance: none;
+
+		border: none;
+
+		width: 100%;
+		}
+		input[type=range]::-webkit-slider-runnable-track {
+		width: 100%;
+		height: 2px;
+		background: #a8a8a8;
+		border: none;
+		border-radius: 3px;
+		}
+		input[type=range]::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		border: 1px solid #aaa;
+		height: 2em;
+		width: 2em;
+		border-radius: 50%;
+		background: #fff;
+		margin-top: -0.8em;
+		}
+		input[type=range]:focus {
+		outline: none;
+		}
+		input[type=range]:focus::-webkit-slider-runnable-track {
+		background: #a8a8a8;
+		}
+
+		input[type=range]::-moz-range-track {
+		width: 100%;
+		height: 2px;
+		background: #a8a8a8;
+		border: none;
+		border-radius: 3px;
+		}
+		input[type=range]::-moz-range-thumb {
+		border: 1px solid #aaa;
+		height: 2em;
+		width: 2em;
+		border-radius: 50%;
+		background: #fff;
+		}
+
+		input[type=range]:-moz-focusring{
+
+		}
+
+		input[type=range]::-ms-track {
+		width: 100%;
+		height: 2px;
+
+		background: transparent;
+
+		border-color: transparent;
+		border-width: 6px 0;
+
+		color: transparent;
+		}
+		input[type=range]::-ms-fill-lower {
+		background: #a8a8a8;
+		border-radius: 10px;
+		}
+		input[type=range]::-ms-fill-upper {
+		background: #a8a8a8;
+		border-radius: 10px;
+		}
+		input[type=range]::-ms-thumb {
+		border: 1px solid #aaa;
+		height: 2em;
+		width: 2em;
+		border-radius: 50%;
+		background: #fff;
+		}
+		input[type=range]:focus::-ms-fill-lower {
+		background: #a8a8a8;
+		}
+		input[type=range]:focus::-ms-fill-upper {
+		background: #a8a8a8;
+		}
+
+
+
+		.drop_label{
+		}
+		.drop_img{
+		}
+
+
+		.dropbtn {
+		color: 941323;
+		padding: 6px;
+		font-size: 5vw;
+		border: none;
+		cursor: pointer;
+		}
+
+		.dropbtn:hover, .dropbtn:focus {
+		//background-color: #3e8e41;
+		}
+
+		.dropdown {
+		width:100%;
+		float: right;
+		position: relative;
+		display: inline-block;
+
+		}
+
+		.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f9f9f9;
+		width: 100%;
+		overflow: auto;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		right: 0;
+		}
+
+		.dropdown-content a {
+		color: black;
+		padding: 12px 16px;
+		text-decoration: none;
+		display: block;
+		}
+
+		.dropdown a:hover {background-color: #f1f1f1}
+
+		.show {display:block;}
+
+		</style>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+		<link rel="stylesheet" href="dist.css"></link>
+		<title>magiclamp</title>
+	</head>
+	<body style="background:#F5F5F5" onload="create_main_screen();">
+		
+		<div id="screen_main" style="">
+
+			<div style="border: 0px solid red; left:0; font-family:sans-serif; color:#941323; font-size:1.3em; position:absolute;right:0;z-index:100;background:rgba(245,245,245,0.93);">
+				<img onclick="$('.aside').asidebar('open')" src="../menu.png" style="height:0.6em; vertical-align:center; margin-left:0.6em">
+				<label style="visibility:hidden">___</label>
+				<label>Lamp Effects</label>
+
+				<div style="display:inline-block; float:right; height:1em; border:0px solid red">
+					<img id="toggle" onclick="toggle_bar(true);" src="../arrow_down.png" style="height:0.6em; margin-right:0.6em; margin-top:0.2em">
+				</div>
+
+				<div style="height:0.25em;width:10px"></div>
+
+				<div style="display:none; border: 0px solid green; margin: 0.6em" id="main_settings">
+
+					<table border="0" >
+						<tr>
+							<td>
+								<img width="80px" src="../btn.png" onclick="alert(2);" style="margin-bottom:0.75em; margin-right:0.5em">
+							</td>
+							<td style="width:100%">
+								<input onchange="alert(this.value);" type="range" style="width:100%" id="points" value="50" min="0" max="100">
+							</td>
+						</tr>
+						<tr style="font-family:sans-serif; color:#941323">
+							<td align="center">ON/OFF</td>
+							<td align="center">OVERALL BRIGHTNESS</td>
+						</tr>
+					</table>
+
+				</div>
+			</div>
+
+			<!--<img src="../arrow_down.png" style="height:1em"> <img src="../arrow_up.png" style="height:1em"><br><br>-->
+			<!--<div style="height:1.5em"></div>-->
+
+
+			<!--
+			<div style="position: relative; background:#000; border-radius:8px" >
+			<img src="../chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)">
+			<div style="position: absolute; pointer-events:none; right: 0; bottom: 0; color: white; margin-right:8vw; margin-bottom: 3vw;">
+			<img class="play" id="btn_play_1" src="../Play.png" style="width:10vw;height:10vw"><div style="width:10vw; height:0px; display: inline-block"></div><img class="edit" src="../edit.png" style="width:10vw;height:10vw">
+
+			</div>
+
+			<div style="position: absolute; left: 0; width: 100%; height:100%; bottom: 0; color: white">
+			test
+			</div>
+			</div>
+
+
+			<a href="#" onclick="$('.aside').asidebar('open')">Open aside</a>-->
+
+
+			<div class="aside">
+				<div class="aside-header">
+					Settings:
+					<span class="close" data-dismiss="aside" aria-hidden="true">&times;</span>
+				</div>
+				<div class="aside-contents">
+					<!--<h4><input type="text" value="https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info" style="width:100%"></h4>-->
+					<br>URL:
+					
+					<h4><textarea onkeyup="textAreaAdjust(this)" id="url" style="overflow:hidden;width:100%;height:6em"></textarea></h4>
+					<p style="width:100%"><button onclick="save();" style="width:49%; background:none; border:2px solid #941323; font-family:sans-serif; color: 941323; font-weight:bold">save</button><label style="width:2%;display:inline-block"></label><button onclick="discard();" style="width:49%; background:none; border:2px solid #941323; font-family:sans-serif; color: 941323; font-weight:bold">discard</button></p>
+				</div>
+			</div>
+
+
+			<div id="main_content" style="height:100%; overflow-x:auto" >
+				<div>
+					<div style="position:absolute; color:white; ">
+						<div style="height:0.5em;width:0"></div>
+						<label id="effect1" style=" font-size:2em; margin:0.4em; font-family:sans-serif; font-weight:550">TEST</label>
+						<div style="width:0; height:0.25em"></div>
+						<label style=" font-size:1em; margin:0.8em; font-family:sans-serif;" id="effect1_description">Beschreibung</label>
+					</div>
+					<img src="../chair.jpg" style="border-radius:8px; width:100%">
+				</div>
+
+				<div style="height:0.5em;width:0"></div>
+				<div style="height:0.5em;width:0"></div>
+
+				<div>
+					<img src="../chair.jpg" style="border-radius:8px; width:100%">
+				</div>
+			</div>
+
+		</div>
+		<!--
+		/** 
+
+		-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+		*/
+		-->
+
+		<div id="screen_edit" style="display:none;margin-left:-0.5em;margin-top:-0.5em; margin-right:-0.5em">
+
+			<div style="width:100%">
+				<div style="position:absolute; color:white; margin-top:7vw; margin-left:5vw; font-family:sans-serif;font-size:4vw">
+					<!--<label onclick="back();">&lArr;</label>-->
+					<img style="width:1em;height:1em" src="../arrow_back.png" onclick="back();">
+					<label style="visibility:hidden">____</label><label id="edit_name">Effect Lorem Ispum</label>
+				</div>
+				<img src="chair.jpg" style="width:100%">
+			</div>
+
+			<table border="0" style="background-color:#fff; font-family:sans-serif; color:#941323; font-size:3.6vw">
+				<tr>
+					<td colspan="3" style="visibility:hidden">_</td>
+				</tr>
+				<tr>
+					<td style="visibility:hidden">._</td>
+					<td>Lorem ipsum dolor sit amet, consectetur, adipisci velit. aenean commodo ligula eget dolor. aenean massa</td>
+					<td style="visibility:hidden">_</td>
+				</tr>
+				<tr>
+					<td colspan="3" style="visibility:hidden">_</td>
+				</tr>
+			</table>
+			
+			<div style="height:7vw; width:1px"></div>
+			
+			<table style="width:100%; font-family:sans-serif; " border="0">
+				<tr>
+					<td style="width:1px;visibility:hidden">_</td>
+					<td id="options_content">
+						<!--<table border="1" style="width:100%;">
+						<tr>
+						<td style="white-space:nowrap; color:#941323; font-size:4vw">test</td>
+						<td style="visibility:hidden; font-size:4vw">_._</td>
+						<td style="width:100%"><input oninput="document.getElementById('l_1').innerHTML = (this.value);" type="range" style="width:100%" id="points" value="50" min="0" max="100"></td>
+						</tr>
+						<tr> <td colspan="3" style="height:2em"></td> </tr>
+						<tr>
+						<td style="white-space:nowrap; color:#941323; font-size:4vw">nr</td>
+						<td style="visibility:hidden">_</td>
+						<td><input oninput="document.getElementById('l_1').innerHTML = (this.value);" type="range" style="width:100%" id="points" value="1" min="0" max="2"></td>
+						</tr>
+						<tr> <td colspan="3" style="height:2em"></td> </tr>
+						<tr>
+						<td style="white-space:nowrap; color:#941323; font-size:4vw">test-nr</td>
+						<td style="visibility:hidden">_</td>
+						<td>
+
+
+						<div class="dropdown">
+						<div class="dropbtn" onclick="myFunction()">
+						<label onclick="myFunction()">test</label>
+						<img onclick="myFunction()" src="arrow_down.png" style="height:0.5em; margin-top:0.25em; margin-right:0.5em " align="right">
+						</div>
+						<hr style="margin:0">
+						<div id="myDropdown" class="dropdown-content">
+						<a href="#home">Home</a>
+						<a onclick="alert(2);" href="#about">About</a>
+						<a href="#contact">Contact</a>
+						</div>
+						</div>
+
+
+
+						</td>
+						</tr>
+						</table>-->
+					</td>
+					<td style="width:1px;visibility:hidden">_</td>
+				</tr>
+			</table>
+
+		</div>
+
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.0.0.min.js"></script>
+		<script type="text/javascript" src="js/jquery/asidebar.jquery.js"></script>
+	</body>
+</html>

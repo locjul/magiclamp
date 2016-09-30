@@ -1,0 +1,98 @@
+<html>
+	<head>
+		<title>_</title>
+		<script type="text/javascript">
+			function play_effect(name,i){
+				/*if (document.getElementById("label_" + i).innerHTML == "true"){
+					alert("stop: " + name);
+					document.getElementById("label_" + i).innerHTML = false;
+					document.getElementById("img_" + i).src = "play.png";
+				}else{
+					alert("play: " + name);
+					document.getElementById("label_" + i).innerHTML = true;
+					document.getElementById("img_" + i).src = "pause.png";
+				}*/
+				var w = window.innerWidth;
+				alert(w);
+			}
+			
+			
+		</script>
+	</head>
+	<body style="font-size:1em">
+		<!--<div style="position: relative; background:#000; border-radius:8px" >
+			<img src="chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)">
+			<div style="position: absolute; pointer-events:none; right: 0; bottom: 0; color: white; margin-right:8em; margin-bottom: 3em;">
+				<img onclick="play_effect(0,0);" class="play" id="btn_play_1" src="play.png" style="width:10em;height:10em">
+				<div style="width:10em; height:0px; display: inline-block"></div>
+				<img class="edit" src="edit.png" style="width:10em;height:10em">
+			</div>
+			<div style="position: absolute; left: 0; width: 100%; height:100%; bottom: 0; color: white">
+				test
+			</div>
+		</div>-->
+		
+		<div style="height:30px"></div>
+		
+		
+		<div style="position: relative; background:#000; border-radius:8px; font-size:1em" >
+			<img src="chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)">
+			<div style="position: absolute; right: 0; bottom: 0; color: white; margin-right:1.8em; margin-bottom: 1em; z-index:98">
+				<label id="label_' + 0 + '" style="display:none">false</label>
+				<img id="img_' + 0 + '" onclick="play_effect(' + "'" + result[0].name + "'," + 0 + ');" src="play.png" style="width:1.5em;height:1.5em">
+				<div style="width:1.2em; height:0px; display: inline-block"></div>
+				<img onclick="edit_effect(' + "'" + result[0].name + "'," + JSON.stringify(res.controls).split('"').join("'") + ');" src="edit.png" style="width:1.5em;height:1.5em">
+			</div>
+			<div style="position: absolute; left: 0.5em; width: 100%; height:100%; bottom: 0; color: white">
+				<div style="height:0.3em;width:0"></div>
+				<label style=" font-size:1.8em; ; font-family:sans-serif; font-weight:850">Effect Lorem Ipsum</label>
+				<div style="width:1em; height:0.2em"></div>
+				<label style=" font-size:0.8em; margin-left:0.2em; font-family:sans-serif; font-weight:100">Effect Lorem Ipsum</label>
+			</div>
+		</div>
+		
+		<div style="height:50px;width:0"></div>
+		
+		<!-- ___________________test____________________________________________________ -->
+		
+		<div style="position: relative; background:#000; border-radius:8px; font-size:1em" >
+			<img src="chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)">
+			<div style="position: absolute; right: 0; bottom: 0; color: white; margin-right:15vw; margin-bottom: 10vw; z-index:98">
+				<label id="label_' + 0 + '" style="display:none">false</label>
+				<img id="img_' + 0 + '" onclick="play_effect(' + "'" + result[0].name + "'," + 0 + ');" src="play.png" style="width:20vw;height:20vw">
+				<div style="width:12vw; height:0px; display: inline-block"></div>
+				<img onclick="edit_effect(' + "'" + result[0].name + "'," + JSON.stringify(res.controls).split('"').join("'") + ');" src="edit.png" style="width:20vw;height:20vw">
+			</div>
+			<div style="position: absolute; left: 5vw; width: 100%; height:100%; bottom: 0; color: white">
+				<div style="height:3vw;width:0"></div>
+				<label style=" font-size:8vw; ; font-family:sans-serif; font-weight:850">Effect Lorem Ipsum</label>
+				<div style="width:1em; height:2vw"></div>
+				<label style=" font-size:5vw; margin-left:2vw; font-family:sans-serif; font-weight:100">Effect Lorem Ipsum</label>
+			</div>
+		</div>
+		
+		<div style="height:50px;width:0"></div>
+		
+		<!-- _______________________________________________________________________ -->
+		
+		
+		<div style="position: relative; background:#000; border-radius:8px" >
+			<img src="chair.jpg" style="border-radius:8px; width:100%; opacity: 0.7; filter: alpha(opacity=70)">
+			<div style="position: absolute; right: 0; bottom: 0; color: white; margin-right:9vw; margin-bottom: 5vw; z-index:98">
+				<label id="label_" style="display:none">false</label>
+				<img id="img_" onclick="play_effect(0,0);" src="play.png" style="width:8vw;height:8vw">
+				<div style="width:10vw; height:0px; display: inline-block"></div>
+				<img onclick="edit_effect(0,0);" src="edit.png" style="width:8vw;height:8vw">
+			</div>
+			
+			
+			<div style="position: absolute; left: 0; width: 100%; height:100%; bottom: 0; color: white">
+				<div style="height:0.5em;width:0"></div>
+				<label style=" font-size:50%; margin:0.4em; font-family:sans-serif; font-weight:550">Effect</label>
+				<div style="width:0; height:0.25em"></div>
+				<label style=" font-size:5vw; margin:0.8em; font-family:sans-serif;">Effect</label>
+			</div>
+		</div>
+		
+	</body>
+</html>
