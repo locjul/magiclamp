@@ -131,7 +131,19 @@
 		*/
 		//document.domain = 'yourdomain.com';
 
-		function create_main_screen(){
+		function set_url(){
+			//return;
+			if ((localStorage.getItem("url") == "")||(localStorage.getItem("url") == null)){
+				localStorage.setItem("url",main_url);
+			}else{
+				main_url = localStorage.getItem("url");
+			}
+			document.getElementById("url").value = main_url;
+		}
+		
+		function create_main_screen(){		
+			set_url();
+			
 			var html_text = "";
 			var description;
 			var info_url;
@@ -350,6 +362,15 @@
 					openDropdown.classList.remove('show');
 				}
 			}
+		}
+		
+		function save(){
+			main_url = document.getElementById("url").value;
+			localStorage.setItem("url",main_url);
+		}
+		
+		function discard(){
+			document.getElementById("url").value = main_url;
 		}
 		</script>
 
@@ -594,8 +615,8 @@
 					<!--<h4><input type="text" value="https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info" style="width:100%"></h4>-->
 					<br>URL:
 					
-					<h4><textarea onkeyup="textAreaAdjust(this)" id="url" style="overflow:hidden;width:100%;height:6em">https://connectedcar-dev.t-systems-mms.eu/magiclamp/effects/rainbow/info</textarea></h4>
-					<p style="width:100%"><button style="width:49%; background:none; border:2px solid #941323; font-family:sans-serif; color: 941323; font-weight:bold">speichern</button><label style="width:2%;display:inline-block"></label><button style="width:49%; background:none; border:2px solid #941323; font-family:sans-serif; color: 941323; font-weight:bold">verwerfen</button></p>
+					<h4><textarea onkeyup="textAreaAdjust(this)" id="url" style="overflow:hidden;width:100%;height:6em"></textarea></h4>
+					<p style="width:100%"><button onclick="save();" style="width:49%; background:none; border:2px solid #941323; font-family:sans-serif; color: 941323; font-weight:bold">save</button><label style="width:2%;display:inline-block"></label><button onclick="discard();" style="width:49%; background:none; border:2px solid #941323; font-family:sans-serif; color: 941323; font-weight:bold">discard</button></p>
 				</div>
 			</div>
 
